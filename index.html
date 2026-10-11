@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soumendra Sir' s Biology Classes - NEET PHYSICS XI EXAM SERIES 8 SET A</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Graphical Feedback Report -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2canvas for Secure Score Card Image Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; user-select: none; -webkit-user-select: none; }
+        .palette-btn { width: 38px; height: 38px; font-weight: 600; font-size: 0.85rem; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; cursor: pointer; }
+        .status-not-visited { background-color: #e2e8f0; color: #475569; }
+        .status-not-answered { background-color: #ef4444; color: #ffffff; }
+        .status-answered { background-color: #22c55e; color: #ffffff; }
+        .status-marked { background-color: #a855f7; color: #ffffff; }
+        .status-answered-marked { background-color: #3b82f6; color: #ffffff; position: relative; }
+        .watermark { position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.04; font-size: 3rem; font-weight: bold; color: #000; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; transform: rotate(-30deg); }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Security Watermark -->
+    <div id="watermarkContainer" class="watermark"></div>
+
+    <!-- HEADER -->
+    <header class="bg-slate-900 text-white shadow-md py-3 px-6 flex justify-between items-center z-20">
+        <div>
+            <h1 class="text-lg font-bold tracking-wide text-amber-400">Soumendra Sir' s Biology Classes-8910587106</h1>
+            <p class="text-xs text-slate-300">NEET PHYSICS XI EXAM SERIES 8 SET A | Topic: Thermodynamics</p>
+        </div>
+        <div id="headerTimerSection" class="hidden items-center space-x-6">
+            <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 flex items-center space-x-2">
+                <i class="fa-solid fa-clock text-amber-400"></i>
+                <span class="text-xs text-slate-400">Time Left:</span>
+                <span id="timerDisplay" class="font-mono font-bold text-lg text-amber-400">01:00:00</span>
+            </div>
+            <div class="text-right text-xs">
+                <p id="candidateNameDisplay" class="font-semibold text-slate-200"></p>
+                <p class="text-slate-400">Total Marks: 180 | +4 / -1</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4">
+
+        <!-- 1. LOGIN / VERIFICATION SCREEN -->
+        <section id="loginScreen" class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-8 border border-slate-200">
+            <div class="text-center mb-6">
+                <div class="inline-block p-3 bg-amber-100 text-amber-600 rounded-full mb-3">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900">Candidate Verification</h2>
+                <p class="text-sm text-slate-500 mt-1">Enter your details and secure exam credentials</p>
+            </div>
+
+            <form id="verificationForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <input type="text" id="userNameInput" required placeholder="Enter your full name" 
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Exam Date Password (Format: DDMMYYYY)</label>
+                    <input type="password" id="examPasswordInput" required placeholder="Enter exam date password" 
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    <p class="text-xs text-slate-400 mt-1">Hint: Today's date in DDMMYYYY format (e.g., 11102026)</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Security Captcha</label>
+                    <div class="flex items-center space-x-3 mb-2">
+                        <span id="captchaBox" class="bg-slate-200 font-mono font-bold text-lg px-4 py-2 rounded-lg tracking-widest select-none text-slate-700"></span>
+                        <button type="button" id="refreshCaptcha" class="text-slate-500 hover:text-slate-700 p-2"><i class="fa-solid fa-rotate-right"></i></button>
+                    </div>
+                    <input type="text" id="captchaInput" required placeholder="Enter captcha text" 
+                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+
+                <button type="submit" class="w-full bg-slate-900 text-white font-semibold py-3 rounded-lg hover:bg-slate-800 transition duration-200 shadow-md">
+                    Proceed to Instructions & Exam
+                </button>
+            </form>
+        </section>
+
+        <!-- 2. INSTRUCTIONS SCREEN -->
+        <section id="instructionsScreen" class="hidden bg-white rounded-2xl shadow-xl w-full max-w-3xl p-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4 border-b pb-3">Exam Instructions & Guidelines</h2>
+            
+            <div class="space-y-4 text-sm text-slate-600 mb-6 max-h-96 overflow-y-auto pr-2">
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+                    <p class="font-semibold text-amber-800">Important Note on Exam Integrity:</p>
+                    <p class="text-amber-700">This examination is strictly proctored. Full-screen mode is mandatory, tab-switching/blurring is monitored, and copy-pasting/right-clicking is disabled.</p>
+                </div>
+                
+                <h3 class="font-bold text-slate-800 text-base">Topics & Sub-topics Covered:</h3>
+                <p class="text-slate-700"><strong>NEET PHYSICS XI EXAM SERIES 8 SET A (Thermodynamics):</strong> Thermal equilibrium, zeroth law of thermodynamics, concept of temperature, heat, work, internal energy, first law of thermodynamics, isothermal and adiabatic processes, second law of thermodynamics (reversible and irreversible processes).</p>
+
+                <h3 class="font-bold text-slate-800 text-base">Structure of Examination & Rules:</h3>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>Total Questions:</strong> 45 Multiple Choice Questions (MCQs).</li>
+                    <li><strong>Total Marks:</strong> 180 Marks.</li>
+                    <li><strong>Marking Scheme:</strong> +4 Marks for every correct answer, -1 Mark for every incorrect answer, 0 for unattempted.</li>
+                    <li><strong>Duration:</strong> 1 Hour (60 Minutes). Timer starts automatically upon beginning the test.</li>
+                    <li><strong>Question Pattern:</strong> 10 Statement based, 5 Assertion & Reasoning based, 5 Case-study based, and 25 Numerical critical thinking based questions.</li>
+                </ul>
+
+                <h3 class="font-bold text-slate-800 text-base">Palette Color Coding:</h3>
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <div class="flex items-center space-x-2"><div class="palette-btn status-not-visited">0</div><span>Not Visited</span></div>
+                    <div class="flex items-center space-x-2"><div class="palette-btn status-not-answered">0</div><span>Not Answered</span></div>
+                    <div class="flex items-center space-x-2"><div class="palette-btn status-answered">0</div><span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><div class="palette-btn status-marked">0</div><span>Marked for Review</span></div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3 mb-6">
+                <input type="checkbox" id="agreeCheckbox" class="w-4 h-4 text-amber-600 rounded focus:ring-amber-500">
+                <label for="agreeCheckbox" class="text-sm font-medium text-slate-700">I have read and understood all instructions. I agree to abide by the proctoring rules.</label>
+            </div>
+
+            <button id="startExamBtn" disabled class="w-full bg-slate-400 text-white font-semibold py-3 rounded-lg cursor-not-allowed transition duration-200">
+                Start Examination
+            </button>
+        </section>
+
+        <!-- 3. EXAM CBT INTERFACE -->
+        <section id="examScreen" class="hidden w-full max-w-7xl bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden flex flex-col lg:flex-row h-[82vh]">
+            
+            <!-- Left Pane: Question Area -->
+            <div class="flex-grow flex flex-col p-6 border-r border-slate-200 overflow-y-auto">
+                <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-4">
+                    <div>
+                        <span id="questionTypeBadge" class="bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">Statement Based</span>
+                        <span class="text-sm font-bold text-slate-500 ml-2">Question <span id="currentQNum">1</span> of 45</span>
+                    </div>
+                    <div class="text-xs text-slate-500">Marks: <span class="text-emerald-600 font-bold">+4</span> | <span class="text-red-600 font-bold">-1</span></div>
+                </div>
+
+                <!-- Question Text -->
+                <div id="questionContainer" class="mb-6">
+                    <p id="questionText" class="text-lg font-medium text-slate-900 leading-relaxed mb-6"></p>
+                    
+                    <!-- Options List -->
+                    <div id="optionsContainer" class="space-y-3">
+                        <!-- Options injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Action Footer Buttons -->
+                <div class="mt-auto pt-4 border-t border-slate-200 flex flex-wrap justify-between items-center gap-3">
+                    <div class="space-x-2">
+                        <button id="markReviewBtn" class="px-4 py-2 bg-purple-100 text-purple-700 font-medium rounded-lg hover:bg-purple-200 transition text-sm">
+                            <i class="fa-solid fa-bookmark mr-1"></i> Mark for Review & Next
+                        </button>
+                        <button id="clearResponseBtn" class="px-4 py-2 bg-slate-100 text-slate-700 font-medium rounded-lg hover:bg-slate-200 transition text-sm">
+                            Clear Response
+                        </button>
+                    </div>
+                    <div class="space-x-2">
+                        <button id="prevBtn" class="px-5 py-2 bg-slate-800 text-white font-medium rounded-lg hover:bg-slate-700 transition text-sm">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Previous
+                        </button>
+                        <button id="nextBtn" class="px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition text-sm font-semibold">
+                            Save & Next <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Pane: Question Palette & Status -->
+            <div class="w-full lg:w-80 bg-slate-50 p-5 flex flex-col shrink-0">
+                <h3 class="font-bold text-slate-900 mb-3 text-sm flex items-center justify-between">
+                    <span>Question Palette</span>
+                    <i class="fa-solid fa-grid-2 text-slate-400"></i>
+                </h3>
+
+                <!-- Status Summary Legend -->
+                <div class="grid grid-cols-2 gap-2 text-xs mb-4 pb-3 border-b border-slate-200">
+                    <div class="flex items-center space-x-1.5"><div class="w-3 h-3 rounded-full bg-emerald-500"></div><span class="text-slate-600">Answered (<span id="countAnswered">0</span>)</span></div>
+                    <div class="flex items-center space-x-1.5"><div class="w-3 h-3 rounded-full bg-red-500"></div><span class="text-slate-600">Not Answered (<span id="countNotAnswered">0</span>)</span></div>
+                    <div class="flex items-center space-x-1.5"><div class="w-3 h-3 rounded-full bg-slate-300"></div><span class="text-slate-600">Not Visited (<span id="countNotVisited">45</span>)</span></div>
+                    <div class="flex items-center space-x-1.5"><div class="w-3 h-3 rounded-full bg-purple-500"></div><span class="text-slate-600">Marked (<span id="countMarked">0</span>)</span></div>
+                </div>
+
+                <!-- Colorful Dots Palette Grid -->
+                <div id="paletteGrid" class="grid grid-cols-5 gap-2 overflow-y-auto max-h-96 pr-1 mb-4">
+                    <!-- Palette buttons injected dynamically -->
+                </div>
+
+                <!-- Submit Exam Button -->
+                <button id="submitExamTriggerBtn" class="mt-auto w-full bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition shadow-md text-sm flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Submit Examination</span>
+                </button>
+            </div>
+
+        </section>
+
+        <!-- 4. RESULT & FEEDBACK REPORT SCREEN -->
+        <section id="resultScreen" class="hidden w-full max-w-5xl bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+            <div id="printableReport" class="space-y-8">
+                <!-- Report Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Performance Feedback Report</h2>
+                        <p class="text-sm text-slate-500">Soumendra Sir' s Biology Classes | NEET Physics Exam Series 8 Set A</p>
+                    </div>
+                    <div class="bg-slate-900 text-white px-6 py-3 rounded-xl text-right">
+                        <p class="text-xs text-slate-400">Candidate Name</p>
+                        <p id="reportCandidateName" class="font-bold text-lg text-amber-400"></p>
+                    </div>
+                </div>
+
+                <!-- Score Cards Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                        <p class="text-xs text-slate-500">Total Score</p>
+                        <p id="reportTotalScore" class="text-3xl font-extrabold text-slate-900 mt-1">0 / 180</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center">
+                        <p class="text-xs text-emerald-700">Correct Answers</p>
+                        <p id="reportCorrectCount" class="text-3xl font-extrabold text-emerald-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-200 text-center">
+                        <p class="text-xs text-red-700">Incorrect Answers</p>
+                        <p id="reportIncorrectCount" class="text-3xl font-extrabold text-red-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-center">
+                        <p class="text-xs text-amber-700">Accuracy Rate</p>
+                        <p id="reportAccuracy" class="text-3xl font-extrabold text-amber-600 mt-1">0%</p>
+                    </div>
+                </div>
+
+                <!-- Graphical Representation Chart -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <h3 class="font-bold text-slate-800 mb-4 text-base">Topic-Wise Performance Analysis</h3>
+                    <div class="w-full h-64 flex items-center justify-center">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Weak Areas & Recommendations -->
+                <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl">
+                    <h3 class="font-bold text-red-800 text-base mb-2">Areas Requiring Focus & Revision</h3>
+                    <ul id="weakAreasList" class="list-disc pl-5 space-y-1 text-sm text-red-700">
+                        <!-- Weak areas dynamically populated -->
+                    </ul>
+                </div>
+
+                <!-- Detailed Answer Keys & Explanations -->
+                <div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-4">Complete Answer Keys & Explanations</h3>
+                    <div id="answerKeysContainer" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+                        <!-- Answer keys injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post-Exam Actions -->
+            <div class="mt-8 pt-6 border-t border-slate-200 flex flex-wrap justify-between items-center gap-4">
+                <button id="downloadReportBtn" class="bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition shadow-md flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download Report Card</span>
+                </button>
+                <button id="sendWhatsAppBtn" class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition shadow-md flex items-center space-x-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Send Score to WhatsApp (8910587106)</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-3 text-center text-xs mt-auto">
+        <p>&copy; 2026 Soumendra Sir' s Biology Classes. All rights reserved. Secure Proctored CBT Platform.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- PROCTORING & SECURITY ENFORCEMENT ---
+        let cheatAttempts = 0;
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('copy', e => { e.preventDefault(); alert("Copying is disabled during examination!"); });
+        document.addEventListener('cut', e => e.preventDefault());
+        document.addEventListener('paste', e => e.preventDefault());
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && examActive) {
+                cheatAttempts++;
+                alert(`Warning ${cheatAttempts}: Tab switching or minimizing window is prohibited during examination!`);
+                if (cheatAttempts >= 3) {
+                    alert("Maximum tab switching limit exceeded. Submitting examination automatically.");
+                    submitExam();
+                }
+            }
+        });
+
+        // --- APPLICATION STATE ---
+        let userName = "";
+        let currentQuestionIndex = 0;
+        let examActive = false;
+        let timerInterval = null;
+        let timeLeft = 3600; // 1 Hour in seconds
+
+        // 45 Questions Database on "Thermodynamics" (Physics)
+        // Pattern: 10 Statement (1-10), 5 Assertion-Reason (11-15), 5 Case Study (16-20), 25 Numerical Critical Thinking (21-45)
+        const masterQuestions = [
+            // Statement Based (10)
+            {
+                id: 1, type: "Statement Based", topic: "Zeroth Law & Thermal Equilibrium",
+                question: "Consider the following statements regarding thermal equilibrium and the Zeroth Law:<br>I. Zeroth law of thermodynamics forms the basis of temperature measurement (thermometry).<br>II. If body A is in thermal equilibrium with body B, and body B is in thermal equilibrium with body C, then A and C are necessarily in thermal equilibrium with each other.<br>III. Temperature is a vector quantity.<br>Which of the above statements are correct?",
+                options: ["I and II only", "II and III only", "I and III only", "I, II and III"],
+                correct: 0,
+                explanation: "Temperature is a scalar quantity, not a vector. Statements I and II correctly state the Zeroth law and its thermodynamic implication."
+            },
+            {
+                id: 2, type: "Statement Based", topic: "First Law & Internal Energy",
+                question: "Read the statements about internal energy and the First Law of Thermodynamics:<br>I. Internal energy is a state function.<br>II. Heat and work are path functions.<br>III. For a cyclic process, net change in internal energy is non-zero.<br>Choose the correct option:",
+                options: ["I and II only", "II and III only", "I and III only", "I, II and III"],
+                correct: 0,
+                explanation: "In a cyclic process, initial and final states are identical, so net change in internal energy (&Delta;U) is zero. Statement III is false."
+            },
+            {
+                id: 3, type: "Statement Based", topic: "Thermodynamic Processes",
+                question: "Regarding isothermal and adiabatic processes:<br>I. In an isothermal process, temperature remains constant (&Delta;T = 0).<br>II. In an adiabatic process, no heat is exchanged between system and surroundings (dQ = 0).<br>III. The slope of an adiabatic curve on a P-V diagram is less steep than an isothermal curve.<br>Which statements are correct?",
+                options: ["I and II only", "II and III only", "I and III only", "I, II and III"],
+                correct: 0,
+                explanation: "Adiabatic curve slope is &gamma; times steeper than isothermal curve ($-&gamma;P/V$ vs $-P/V$). Statement III is incorrect."
+            },
+            {
+                id: 4, type: "Statement Based", topic: "Second Law of Thermodynamics",
+                question: "Consider statements on the Second Law of Thermodynamics:<br>I. Kelvin-Planck statement deals with conversion of heat into work.<br>II. Clausius statement deals with transfer of heat from lower to higher temperature body.<br>III. Efficiency of a Carnot engine can be 100% operating between two finite temperatures.<br>Identify the correct statements:",
+                options: ["I and II only", "II and III only", "I and III only", "I, II and III"],
+                correct: 0,
+                explanation: "Carnot efficiency &eta; = 1 - (T_2/T_1) can only be 100% if sink temperature T_2 = 0 K, which is unattainable by the Third Law. Statement III is false."
+            },
+            {
+                id: 5, type: "Statement Based", topic: "Heat and Work",
+                question: "Regarding sign conventions in thermodynamics:<br>I. Work done by a system is taken as positive.<br>II. Heat absorbed by a system is taken as positive.<br>III. Increase in internal energy corresponds to positive &Delta;U.<br>Choose correct options:",
+                options: ["I, II and III", "I and II only", "II and III only", "I and III only"],
+                correct: 0,
+                explanation: "All standard thermodynamic sign conventions for work, heat, and internal energy are correctly listed."
+            },
+            {
+                id: 6, type: "Statement Based", topic: "Specific Heat Capacities",
+                question: "Consider statements on molar specific heats ($C_p$ and $C_v$):<br>I. For an ideal gas, $C_p - C_v = R$.<br>II. $C_p$ is always greater than $C_v$ for any gas.<br>III. The ratio $C_p / C_v = \\gamma$ depends on the atomicity of the gas.<br>Which are correct?",
+                options: ["I, II and III", "I and II only", "II and III only", "I and III only"],
+                correct: 0,
+                explanation: "All statements regarding Mayer's relation and specific heat ratios for ideal gases are correct."
+            },
+            {
+                id: 7, type: "Statement Based", topic: "Reversible & Irreversible Processes",
+                question: "Statements regarding reversible processes:<br>I. A reversible process is quasi-static and frictionless.<br>II. All natural or spontaneous processes in nature are irreversible.<br>III. Entropy of the universe increases in any irreversible process.<br>Which are correct?",
+                options: ["I, II and III", "I and II only", "II and III only", "I and III only"],
+                correct: 0,
+                explanation: "All statements accurately describe thermodynamic reversibility and the entropy principle."
+            },
+            {
+                id: 8, type: "Statement Based", topic: "Work Done in Expansion",
+                question: "Statements about work done during gas expansion:<br>I. Work done in an isobaric process is $P(V_2 - V_1)$.<br>II. Work done in an isochoric process is zero.<br>III. Work done in an isothermal expansion is $nRT \\ln(V_2/V_1)$.<br>Choose correct options:",
+                options: ["I, II and III", "I and II only", "II and III only", "I and III only"],
+                correct: 0,
+                explanation: "All expressions for work done in isobaric, isochoric, and isothermal processes are correct."
+            },
+            {
+                id: 9, type: "Statement Based", topic: "Carnot Engine",
+                question: "Regarding Carnot's theorem:<br>I. Efficiency of a Carnot engine depends only on temperatures of source and sink.<br>II. All irreversible engines operating between same temperatures have higher efficiency than a reversible Carnot engine.<br>III. Reversible engines have maximum possible efficiency between two given temperatures.<br>Which are correct?",
+                options: ["I and III only", "I and II only", "II and III only", "I, II and III"],
+                correct: 0,
+                explanation: "Irreversible engines have lower efficiency than Carnot engines. Statement II is false."
+            },
+            {
+                id: 10, type: "Statement Based", topic: "Internal Energy of Ideal Gas",
+                question: "Consider statements on ideal gas internal energy:<br>I. Internal energy of an ideal gas depends solely on its absolute temperature.<br>II. In an isothermal process for an ideal gas, internal energy remains constant.<br>III. In a free expansion of an ideal gas into vacuum, temperature changes drastically.<br>Correct statements are:",
+                options: ["I and II only", "II and III only", "I and III only", "I, II and III"],
+                correct: 0,
+                explanation: "In free expansion of an ideal gas into vacuum (Q=0, W=0), &Delta;U = 0, so temperature remains constant (&Delta;T = 0). Statement III is false."
+            },
+
+            // Assertion and Reasoning Based (11-15)
+            {
+                id: 11, type: "Assertion & Reason", topic: "Zeroth Law",
+                question: "<strong>Assertion (A):</strong> The Zeroth Law of thermodynamics introduces the concept of temperature.<br><strong>Reason (R):</strong> Temperature is a property that determines whether two systems are in thermal equilibrium.<br>Choose the correct option:",
+                options: [
+                    "Both (A) and (R) are correct and (R) is the correct explanation of (A).",
+                    "Both (A) and (R) are correct but (R) is not the correct explanation of (A).",
+                    "(A) is correct but (R) is incorrect.",
+                    "(A) is incorrect and (R) is correct."
+                ],
+                correct: 0,
+                explanation: "Zeroth law establishes that thermal equilibrium is transitive, which defines the scalar property called temperature."
+            },
+            {
+                id: 12, type: "Assertion & Reason", topic: "First Law",
+                question: "<strong>Assertion (A):</strong> The first law of thermodynamics is simply the law of conservation of energy applied to thermal systems.<br><strong>Reason (R):</strong> Heat supplied to a system is utilized in increasing internal energy and doing external work.<br>Choose the correct option:",
+                options: [
+                    "Both (A) and (R) are correct and (R) is the correct explanation of (A).",
+                    "Both (A) and (R) are correct but (R) is not the correct explanation of (A).",
+                    "(A) is correct but (R) is incorrect.",
+                    "Both (A) and (R) are incorrect."
+                ],
+                correct: 0,
+                explanation: "&Delta;Q = &Delta;U + &Delta;W embodies the conservation of energy for thermodynamics."
+            },
+            {
+                id: 13, type: "Assertion & Reason", topic: "Adiabatic vs Isothermal",
+                question: "<strong>Assertion (A):</strong> Adiabatic curve is steeper than isothermal curve on a P-V diagram.<br><strong>Reason (R):</strong> In an adiabatic process, $PV^\\gamma = \\text{constant}$, whereas in an isothermal process, $PV = \\text{constant}$.<br>Choose the correct option:",
+                options: [
+                    "Both (A) and (R) are correct and (R) is the correct explanation of (A).",
+                    "Both (A) and (R) are correct but (R) is not the correct explanation of (A).",
+                    "(A) is correct but (R) is incorrect.",
+                    "(A) is incorrect and (R) is correct."
+                ],
+                correct: 0,
+                explanation: "Differentiating $PV^\\gamma = \\text{constant}$ yields slope $-&gamma;P/V$, which is &gamma; times steeper than isothermal slope $-P/V$."
+            },
+            {
+                id: 14, type: "Assertion & Reason", topic: "Free Expansion",
+                question: "<strong>Assertion (A):</strong> When an ideal gas undergoes free expansion into a vacuum, there is no change in temperature.<br><strong>Reason (R):</strong> Internal energy of an ideal gas depends only on temperature and both Q and W are zero.<br>Choose the correct option:",
+                options: [
+                    "Both (A) and (R) are correct and (R) is the correct explanation of (A).",
+                    "Both (A) and (R) are correct but (R) is not the correct explanation of (A).",
+                    "(A) is correct but (R) is incorrect.",
+                    "Both (A) and (R) are incorrect."
+                ],
+                correct: 0,
+                explanation: "Q = 0, W = 0 &rArr; &Delta;U = 0 &rArr; &Delta;T = 0 for ideal gas."
+            },
+            {
+                id: 15, type: "Assertion & Reason", topic: "Second Law",
+                question: "<strong>Assertion (A):</strong> It is impossible to construct a heat engine that converts 100% of heat into work.<br><strong>Reason (R):</strong> According to the second law of thermodynamics, some heat must always be rejected to a lower temperature sink.<br>Choose the correct option:",
+                options: [
+                    "Both (A) and (R) are correct and (R) is the correct explanation of (A).",
+                    "Both (A) and (R) are correct but (R) is not the correct explanation of (A).",
+                    "(A) is correct but (R) is incorrect.",
+                    "(A) is incorrect and (R) is correct."
+                ],
+                correct: 0,
+                explanation: "Kelvin-Planck statement mandates that a cyclic engine cannot convert 100% heat into work without rejecting heat to a sink."
+            },
+
+            // Case Study Based (16-20)
+            {
+                id: 16, type: "Case Study Based", topic: "Case Study: Carnot Cycle",
+                question: "<strong>Case Study:</strong> A Carnot engine operates between reservoirs at 500 K and 300 K absorbing 1200 J of heat from the source per cycle.<br><strong>Question:</strong> What is the efficiency of this Carnot engine?",
+                options: ["40%", "60%", "30%", "50%"],
+                correct: 0,
+                explanation: "&eta; = 1 - (T_2/T_1) = 1 - (300/500) = 1 - 0.6 = 0.4 or 40%."
+            },
+            {
+                id: 17, type: "Case Study Based", topic: "Case Study: Carnot Cycle",
+                question: "How much work (in Joules) does the engine perform per cycle?",
+                options: ["480 J", "720 J", "1200 J", "300 J"],
+                correct: 0,
+                explanation: "Work W = &eta; * Q_1 = 0.4 * 1200 J = 480 J."
+            },
+            {
+                id: 18, type: "Case Study Based", topic: "Case Study: P-V Thermodynamic Cycle",
+                question: "<strong>Case Study:</strong> An ideal gas undergoes a cyclic process ABCA consisting of isobaric expansion, isochoric cooling, and isothermal compression.<br><strong>Question:</strong> What is the net change in internal energy (&Delta;U) of the gas for the complete cycle ABCA?",
+                options: ["Zero", "Positive", "Negative", "Depends on maximum pressure"],
+                correct: 0,
+                explanation: "Internal energy is a state function; in any closed cyclic process, net &Delta;U = 0."
+            },
+            {
+                id: 19, type: "Case Study Based", topic: "Case Study: P-V Thermodynamic Cycle",
+                question: "For a complete cyclic process, how does total heat absorbed (Q) relate to total work done (W) by the system?",
+                options: ["Q = W", "Q > W", "Q < W", "Q = 0"],
+                correct: 0,
+                explanation: "Since &Delta;U = 0 for a cycle, first law (&Delta;Q = &Delta;U + &Delta;W) gives Q = W."
+            },
+            {
+                id: 20, type: "Case Study Based", topic: "Case Study: Adiabatic Expansion",
+                question: "<strong>Case Study:</strong> 2 moles of a monatomic ideal gas ($\gamma = 1.67$) expand adiabatically from an initial volume $V_0$ to $8V_0$.<br><strong>Question:</strong> If initial temperature is $T_0$, what is the final temperature of the gas?",
+                options: ["$T_0 / 4$", "$T_0 / 2$", "$T_0 / 8$", "$T_0 / 16$"],
+                correct: 0,
+                explanation: "For monatomic gas, &gamma; = 5/3. TV^(g-1) = constant &rArr; T_1 V_1^(g-1) = T_2 V_2^(g-1) &rArr; T_2 = T_0 (V_0/8V_0)^(5/3 - 1) = T_0 (1/8)^(2/3) = T_0 / 4."
+            },
+
+            // Numerical Critical Thinking Based (21-45)
+            {
+                id: 21, type: "Numerical Critical", topic: "First Law Calculation",
+                question: "When a system is taken from state A to state B along path ACB, 84 J of heat flows into the system and 32 J of work is done by the system. What is the net change in internal energy (&Delta;U) in Joules?",
+                options: ["+52 J", "+116 J", "-52 J", "-116 J"],
+                correct: 0,
+                explanation: "&Delta;Q = 84 J, &Delta;W = +32 J (work done *by* system). &Delta;U = &Delta;Q - &Delta;W = 84 - 32 = +52 J."
+            },
+            {
+                id: 22, type: "Numerical Critical", topic: "Work Done Isothermal",
+                question: "Calculate the work done (in Joules) when 1 mole of an ideal gas expands isothermally and reversibly from 10 liters to 20 liters at 300 K.<br>($R = 8.314$ J mol<sup>-1</sup> K<sup>-1</sup>, $\\ln 2 = 0.693$)",
+                options: ["1728.8 J", "864.4 J", "3457.6 J", "576.2 J"],
+                correct: 0,
+                explanation: "W = nRT ln(V2/V1) = 1 * 8.314 * 300 * 0.693 = 1728.8 Joules."
+            },
+            {
+                id: 23, type: "Numerical Critical", topic: "Mayer's Relation",
+                question: "For a diatomic gas, molar heat capacity at constant volume $C_v = 5/2 R$. Calculate the molar heat capacity at constant pressure $C_p$.",
+                options: ["$7/2 R$", "$3/2 R$", "$9/2 R$", "$5/2 R$"],
+                correct: 0,
+                explanation: "C_p = C_v + R = 5/2 R + R = 7/2 R."
+            },
+            {
+                id: 24, type: "Numerical Critical", topic: "Adiabatic Process Relation",
+                question: "An ideal gas at pressure P and volume V is compressed adiabatically to 1/8th of its initial volume. If &gamma; = 5/3, what is the final pressure?",
+                options: ["32 P", "16 P", "64 P", "8 P"],
+                correct: 0,
+                explanation: "P_2 = P_1 (V_1/V_2)^(&gamma;) = P (8)^(5/3) = P * (2^3)^(5/3) = P * 2^5 = 32 P."
+            },
+            {
+                id: 25, type: "Numerical Critical", topic: "Internal Energy Change",
+                question: "Find the change in internal energy of 3 moles of a monatomic ideal gas when its temperature is increased from 200 K to 300 K.<br>($R = 8.314$ J mol<sup>-1</sup> K<sup>-1</sup>)",
+                options: ["3741.3 J", "1247.1 J", "6235.5 J", "2494.2 J"],
+                correct: 0,
+                explanation: "&Delta;U = n C_v &Delta;T = 3 * (3/2 R) * (300 - 200) = 4.5 * 8.314 * 100 = 3741.3 Joules."
+            },
+            {
+                id: 26, type: "Numerical Critical", topic: "Efficiency of Carnot Engine",
+                question: "A Carnot engine has an efficiency of 25% when operating between source and sink temperatures. If the sink temperature is lowered by 50 K, its efficiency increases to 50%. Calculate the initial temperature of the source (in Kelvin).",
+                options: ["200 K", "300 K", "400 K", "500 K"],
+                correct: 0,
+                explanation: "T_1 = 200 K. Case 1: T_2 = 150 K (&eta; = 0.25). Case 2: T_2' = 100 K (&eta; = 0.50)."
+            },
+            {
+                id: 27, type: "Numerical Critical", topic: "Work Done Isobaric",
+                question: "Calculate the work done when 2 moles of an ideal gas are heated at constant pressure of $1.013 \\times 10^5$ Pa so that their temperature rises by 50&deg;C.<br>($R = 8.314$ J mol<sup>-1</sup> K<sup>-1</sup>)",
+                options: ["831.4 J", "415.7 J", "1662.8 J", "207.8 J"],
+                correct: 0,
+                explanation: "W = P &Delta;V = n R &Delta;T = 2 * 8.314 * 50 = 831.4 Joules."
+            },
+            {
+                id: 28, type: "Numerical Critical", topic: "First Law Application",
+                question: "In supplying 400 J of heat to a system, 150 J of work is done *on* the system. What is the change in internal energy of the system?",
+                options: ["+550 J", "+250 J", "-250 J", "-550 J"],
+                correct: 0,
+                explanation: "&Delta;Q = +400 J, Work done *on* system means &Delta;W = -150 J. &Delta;U = &Delta;Q - &Delta;W = 400 - (-150) = +550 J."
+            },
+            {
+                id: 29, type: "Numerical Critical", topic: "Ratio of Specific Heats",
+                question: "For a gaseous mixture consisting of 1 mole of oxygen and 1 mole of argon, calculate the effective value of &gamma; for the mixture.",
+                options: ["1.54", "1.67", "1.40", "1.33"],
+                correct: 0,
+                explanation: "Cv = 1(2.5R) + 1(1.5R) = 4R. Cp = 1(3.5R) + 1(2.5R) = 6R. &gamma; = 6/4 = 1.54."
+            },
+            {
+                id: 30, type: "Numerical Critical", topic: "Coefficient of Performance",
+                question: "A refrigerator absorbs heat from a freezing chamber at -23&deg;C and rejects heat to the room at 27&deg;C. What is its theoretical Coefficient of Performance (COP)?",
+                options: ["5.0", "4.0", "6.0", "10.0"],
+                correct: 0,
+                explanation: "T_2 = 250 K, T_1 = 300 K. COP = T_2 / (T_1 - T_2) = 250 / 50 = 5.0."
+            },
+            {
+                id: 31, type: "Numerical Critical", topic: "Work Done in Cyclic Process",
+                question: "In a cyclic process, a system absorbs 500 J of heat and does work. If the net change in internal energy over the cycle is zero, what is the work done by the system in Joules?",
+                options: ["500 J", "0 J", "-500 J", "250 J"],
+                correct: 0,
+                explanation: "By first law for a cycle, &Delta;Q = &Delta;W. Thus W = 500 J."
+            },
+            {
+                id: 32, type: "Numerical Critical", topic: "Adiabatic Compression",
+                question: "A certain gas at 300 K is compressed adiabatically to 1/27 of its original volume. If &gamma; = 5/3, what is the final temperature?",
+                options: ["2700 K", "900 K", "8100 K", "300 K"],
+                correct: 0,
+                explanation: "T_2 = T_1 (V_1/V_2)^(&gamma;-1) = 300 * (27)^(2/3) = 300 * 9 = 2700 K."
+            },
+            {
+                id: 33, type: "Numerical Critical", topic: "Heat Added at Constant Volume",
+                question: "Find the heat absorbed by 2 moles of an ideal diatomic gas when its temperature is raised by 20&deg;C at constant volume.<br>($R = 8.314$ J mol<sup>-1</sup> K<sup>-1</sup>)",
+                options: ["415.7 J", "831.4 J", "1247.1 J", "623.5 J"],
+                correct: 0,
+                explanation: "Q_v = n Cv &Delta;T = 2 * (2.5 * 8.314) * 20 = 50 * 8.314 = 415.7 Joules."
+            },
+            {
+                id: 34, type: "Numerical Critical", topic: "Carnot Engine Source Temperature",
+                question: "A Carnot engine has an efficiency of 50% and rejects heat to a sink at 300 K. What is the temperature of the source in Kelvin?",
+                options: ["600 K", "450 K", "900 K", "1200 K"],
+                correct: 0,
+                explanation: "0.5 = 1 - 300 / T_1 &rArr; T_1 = 600 K."
+            },
+            {
+                id: 35, type: "Numerical Critical", topic: "Work in Isochoric Process",
+                question: "An ideal gas is contained in a rigid steel vessel and heated, raising its pressure from 2 atm to 5 atm. What is the work done by the gas?",
+                options: ["Zero", "3 atm-L", "10 atm-L", "7 atm-L"],
+                correct: 0,
+                explanation: "Rigid vessel means volume is constant (&Delta;V = 0), so work done W = P &Delta;V = 0."
+            },
+            {
+                id: 36, type: "Numerical Critical", topic: "Heat Capacity Ratio",
+                question: "For an ideal gas, the ratio of specific heats &gamma; = 1.4. If $C_v = 20.8$ J mol<sup>-1</sup> K<sup>-1</sup>, calculate $C_p$.",
+                options: ["29.12 J mol<sup>-1</sup> K<sup>-1</sup>", "14.86 J mol<sup>-1</sup> K<sup>-1</sup>", "35.20 J mol<sup>-1</sup> K<sup>-1</sup>", "25.00 J mol<sup>-1</sup> K<sup>-1</sup>"],
+                correct: 0,
+                explanation: "Cp = &gamma; * Cv = 1.4 * 20.8 = 29.12 J mol^-1 K^-1."
+            },
+            {
+                id: 37, type: "Numerical Critical", topic: "Internal Energy Isothermal",
+                question: "1 mole of an ideal gas undergoes isothermal expansion at 400 K to twice its initial volume. What is the change in internal energy (&Delta;U)?",
+                options: ["Zero", "2305 J", "-2305 J", "4610 J"],
+                correct: 0,
+                explanation: "For an isothermal process of an ideal gas, temperature is constant, so &Delta;U = 0."
+            },
+            {
+                id: 38, type: "Numerical Critical", topic: "Work Done Expansion",
+                question: "A gas expands from volume of 2 L to 6 L at a constant pressure of 3 atm. Calculate the work done in Joules.<br>($1 \\text{ atm} = 1.013 \\times 10^5 \\text{ Pa}$)",
+                options: ["1215.6 J", "405.2 J", "2431.2 J", "810.4 J"],
+                correct: 0,
+                explanation: "W = P &Delta;V = 3 atm * (6 - 2) L = 12 atm-L = 12 * 101.3 J = 1215.6 Joules."
+            },
+            {
+                id: 39, type: "Numerical Critical", topic: "Refrigerated Heat Extraction",
+                question: "A refrigerator removes 3000 J of heat from cold reservoir per cycle. If its coefficient of performance is 4, how much work is done per cycle?",
+                options: ["750 J", "12000 J", "3750 J", "600 J"],
+                correct: 0,
+                explanation: "COP = Q_2 / W &rArr; 4 = 3000 / W &rArr; W = 3000 / 4 = 750 J."
+            },
+            {
+                id: 40, type: "Numerical Critical", topic: "Adiabatic Work Done",
+                question: "1 mole of a monatomic gas (&gamma; = 5/3) is compressed adiabatically from 2 L to 1 L. If initial temperature is 300 K, calculate the work done *on* the gas.<br>($R = 8.314$ J mol<sup>-1</sup> K<sup>-1</sup>)",
+                options: ["1163.6 J", "581.8 J", "2327.2 J", "300.0 J"],
+                correct: 0,
+                explanation: "W = nR(T1 - T2)/(&gamma;-1). T2 = 300 * 2^(2/3) = 476.2 K. W = 1 * 8.314 * (300 - 476.2) / (2/3) = -2196 J (magnitude 1163.6 J work done on gas)."
+            },
+            {
+                id: 41, type: "Numerical Critical", topic: "First Law Pressure-Volume",
+                question: "When a system absorbs 200 J of heat, its volume expands by $0.001 \\text{ m}^3$ against a constant atmospheric pressure of $1.013 \\times 10^5$ Pa. What is the change in internal energy?",
+                options: ["98.7 J", "200.0 J", "101.3 J", "301.3 J"],
+                correct: 0,
+                explanation: "W = P &Delta;V = 1.013 * 10^5 * 0.001 = 101.3 J. &Delta;U = Q - W = 200 - 101.3 = 98.7 J."
+            },
+            {
+                id: 42, type: "Numerical Critical", topic: "Carnot Source Temperature Rise",
+                question: "A Carnot engine has efficiency 40%. To increase its efficiency to 50% while keeping sink temperature constant at 300 K, by how many Kelvin must the source temperature be increased?",
+                options: ["100 K", "150 K", "200 K", "50 K"],
+                correct: 0,
+                explanation: "Initial T1 = 500 K. Final T1' = 600 K. Increase = 100 K."
+            },
+            {
+                id: 43, type: "Numerical Critical", topic: "Molar Heat Capacity Isothermal",
+                question: "What is the molar heat capacity of an ideal gas undergoing an isothermal process?",
+                options: ["Infinity (&infin;)", "Zero", "R", "3/2 R"],
+                correct: 0,
+                explanation: "C = Q / (n &Delta;T). In an isothermal process &Delta;T = 0, so C = Q / 0 = infinity (&infin;)."
+            },
+            {
+                id: 44, type: "Numerical Critical", topic: "Molar Heat Capacity Adiabatic",
+                question: "What is the molar heat capacity of an ideal gas undergoing an adiabatic process?",
+                options: ["Zero", "Infinity (&infin;)", "R", "5/2 R"],
+                correct: 0,
+                explanation: "In an adiabatic process Q = 0, so C = 0 / (n &Delta;T) = 0."
+            },
+            {
+                id: 45, type: "Numerical Critical", topic: "Heat Rejected by Carnot Engine",
+                question: "A Carnot engine operating between 400 K and 300 K absorbs 800 J of heat from the source per cycle. How much heat is rejected to the sink?",
+                options: ["600 J", "200 J", "400 J", "800 J"],
+                correct: 0,
+                explanation: "Q_2 / Q_1 = T_2 / T_1 &rArr; Q_2 = 800 * (300 / 400) = 600 J."
+            }
+        ];
+
+        let rawQuestions = [];
+        let userResponses = new Array(45).fill(null);
+        let questionStatus = new Array(45).fill('not-visited');
+
+        // --- DOM ELEMENTS ---
+        const loginScreen = document.getElementById('loginScreen');
+        const instructionsScreen = document.getElementById('instructionsScreen');
+        const examScreen = document.getElementById('examScreen');
+        const resultScreen = document.getElementById('resultScreen');
+
+        const verificationForm = document.getElementById('verificationForm');
+        const userNameInput = document.getElementById('userNameInput');
+        const examPasswordInput = document.getElementById('examPasswordInput');
+        const captchaInput = document.getElementById('captchaInput');
+        const captchaBox = document.getElementById('captchaBox');
+        const refreshCaptchaBtn = document.getElementById('refreshCaptcha');
+
+        const agreeCheckbox = document.getElementById('agreeCheckbox');
+        const startExamBtn = document.getElementById('startExamBtn');
+
+        const headerTimerSection = document.getElementById('headerTimerSection');
+        const candidateNameDisplay = document.getElementById('candidateNameDisplay');
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        const questionTypeBadge = document.getElementById('questionTypeBadge');
+        const currentQNum = document.getElementById('currentQNum');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const markReviewBtn = document.getElementById('markReviewBtn');
+        const clearResponseBtn = document.getElementById('clearResponseBtn');
+        const submitExamTriggerBtn = document.getElementById('submitExamTriggerBtn');
+
+        const paletteGrid = document.getElementById('paletteGrid');
+        const countAnswered = document.getElementById('countAnswered');
+        const countNotAnswered = document.getElementById('countNotAnswered');
+        const countNotVisited = document.getElementById('countNotVisited');
+        const countMarked = document.getElementById('countMarked');
+
+        // --- CAPTCHA GENERATOR ---
+        let currentCaptcha = "";
+        function generateCaptcha() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let code = "";
+            for (let i = 0; i < 5; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptcha = code;
+            captchaBox.textContent = currentCaptcha;
+        }
+        generateCaptcha();
+        refreshCaptchaBtn.addEventListener('click', generateCaptcha);
+
+        // --- VERIFICATION FLOW ---
+        verificationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            userName = userNameInput.value.trim();
+            const password = examPasswordInput.value.trim();
+            const userCaptcha = captchaInput.value.trim();
+
+            // Password format DDMMYYYY for Oct 11, 2026 is 11102026
+            if (password !== "11102026") {
+                alert("Incorrect exam date password! Please enter today's date in DDMMYYYY format (11102026).");
+                return;
+            }
+
+            if (userCaptcha.toUpperCase() !== currentCaptcha) {
+                alert("Incorrect captcha code! Please try again.");
+                generateCaptcha();
+                captchaInput.value = "";
+                return;
+            }
+
+            loginScreen.classList.add('hidden');
+            instructionsScreen.classList.remove('hidden');
+        });
+
+        agreeCheckbox.addEventListener('change', () => {
+            if (agreeCheckbox.checked) {
+                startExamBtn.disabled = false;
+                startExamBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+                startExamBtn.classList.add('bg-amber-600', 'hover:bg-amber-700', 'cursor-pointer');
+            } else {
+                startExamBtn.disabled = true;
+                startExamBtn.classList.add('bg-slate-400', 'cursor-not-allowed');
+                startExamBtn.classList.remove('bg-amber-600', 'hover:bg-amber-700', 'cursor-pointer');
+            }
+        });
+
+        // --- START EXAM & SHUFFLE QUESTIONS ---
+        startExamBtn.addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            }
+
+            // Shuffle questions uniquely for this user session
+            rawQuestions = [...masterQuestions].sort(() => Math.random() - 0.5);
+
+            const watermarkContainer = document.getElementById('watermarkContainer');
+            let wmText = `${userName} - 8910587106 - NEET Physics 2026`;
+            watermarkContainer.innerHTML = `${wmText} &nbsp;&nbsp;&nbsp;&nbsp; `.repeat(30);
+
+            candidateNameDisplay.textContent = userName;
+
+            instructionsScreen.classList.add('hidden');
+            examScreen.classList.remove('hidden');
+            headerTimerSection.classList.remove('hidden');
+            headerTimerSection.classList.add('flex');
+
+            examActive = true;
+            questionStatus[0] = 'not-answered';
+
+            buildPalette();
+            loadQuestion(0);
+            startTimer();
+        });
+
+        // --- TIMER ---
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                let hrs = Math.floor(timeLeft / 3600);
+                let mins = Math.floor((timeLeft % 3600) / 60);
+                let secs = timeLeft % 60;
+                timerDisplay.textContent = `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Submitting examination automatically.");
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        // --- BUILD PALETTE ---
+        function buildPalette() {
+            paletteGrid.innerHTML = "";
+            for (let i = 0; i < 45; i++) {
+                const btn = document.createElement('div');
+                btn.textContent = i + 1;
+                btn.className = `palette-btn ${getStatusClass(questionStatus[i])}`;
+                if (i === currentQuestionIndex) {
+                    btn.classList.add('ring-2', 'ring-slate-900', 'ring-offset-2');
+                }
+                btn.addEventListener('click', () => {
+                    currentQuestionIndex = i;
+                    if (questionStatus[i] === 'not-visited') {
+                        questionStatus[i] = 'not-answered';
+                    }
+                    loadQuestion(currentQuestionIndex);
+                    updatePaletteUI();
+                });
+                paletteGrid.appendChild(btn);
+            }
+            updatePaletteCounts();
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'not-visited': return 'status-not-visited';
+                case 'not-answered': return 'status-not-answered';
+                case 'answered': return 'status-answered';
+                case 'marked': return 'status-marked';
+                case 'answered-marked': return 'status-answered-marked';
+                default: return 'status-not-visited';
+            }
+        }
+
+        function updatePaletteUI() {
+            const buttons = paletteGrid.children;
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].className = `palette-btn ${getStatusClass(questionStatus[i])}`;
+                if (i === currentQuestionIndex) {
+                    buttons[i].classList.add('ring-2', 'ring-slate-900', 'ring-offset-2');
+                }
+            }
+            updatePaletteCounts();
+        }
+
+        function updatePaletteCounts() {
+            let nv = 0, na = 0, ans = 0, mrk = 0;
+            for (let s of questionStatus) {
+                if (s === 'not-visited') nv++;
+                else if (s === 'not-answered') na++;
+                else if (s === 'answered' || s === 'answered-marked') ans++;
+                if (s === 'marked' || s === 'answered-marked') mrk++;
+            }
+            countNotVisited.textContent = nv;
+            countNotAnswered.textContent = na;
+            countAnswered.textContent = ans;
+            countMarked.textContent = mrk;
+        }
+
+        // --- LOAD QUESTION ---
+        function loadQuestion(index) {
+            const q = rawQuestions[index];
+            questionTypeBadge.textContent = q.type + " | " + q.topic;
+            currentQNum.textContent = index + 1;
+            questionText.innerHTML = q.question;
+
+            optionsContainer.innerHTML = "";
+            q.options.forEach((opt, optIdx) => {
+                const isChecked = userResponses[index] === optIdx;
+                const optDiv = document.createElement('label');
+                optDiv.className = `flex items-start p-3 border rounded-lg cursor-pointer transition ${isChecked ? 'border-amber-600 bg-amber-50/50' : 'border-slate-200 hover:bg-slate-50'}`;
+                optDiv.innerHTML = `
+                    <input type="radio" name="questionOption" value="${optIdx}" ${isChecked ? 'checked' : ''} class="mt-1 h-4 w-4 text-amber-600 focus:ring-amber-500 border-slate-300">
+                    <span class="ml-3 text-sm text-slate-700 font-medium">${String.fromCharCode(65 + optIdx)}. ${opt}</span>
+                `;
+                optDiv.querySelector('input').addEventListener('change', () => {
+                    userResponses[index] = optIdx;
+                    if (questionStatus[index] === 'marked') {
+                        questionStatus[index] = 'answered-marked';
+                    } else {
+                        questionStatus[index] = 'answered';
+                    }
+                    updatePaletteUI();
+                });
+                optionsContainer.appendChild(optDiv);
+            });
+            updatePaletteUI();
+        }
+
+        // --- NAVIGATION BUTTONS ---
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < 44) {
+                currentQuestionIndex++;
+                if (questionStatus[currentQuestionIndex] === 'not-visited') {
+                    questionStatus[currentQuestionIndex] = 'not-answered';
+                }
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                if (questionStatus[currentQuestionIndex] === 'not-visited') {
+                    questionStatus[currentQuestionIndex] = 'not-answered';
+                }
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        markReviewBtn.addEventListener('click', () => {
+            if (userResponses[currentQuestionIndex] !== null) {
+                questionStatus[currentQuestionIndex] = 'answered-marked';
+            } else {
+                questionStatus[currentQuestionIndex] = 'marked';
+            }
+            updatePaletteUI();
+            if (currentQuestionIndex < 44) {
+                currentQuestionIndex++;
+                if (questionStatus[currentQuestionIndex] === 'not-visited') {
+                    questionStatus[currentQuestionIndex] = 'not-answered';
+                }
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        clearResponseBtn.addEventListener('click', () => {
+            userResponses[currentQuestionIndex] = null;
+            questionStatus[currentQuestionIndex] = 'not-answered';
+            loadQuestion(currentQuestionIndex);
+            updatePaletteUI();
+        });
+
+        submitExamTriggerBtn.addEventListener('click', () => {
+            if (confirm("Are you sure you want to submit the examination? You cannot make changes after submission.")) {
+                submitExam();
+            }
+        });
+
+        // --- SUBMIT EXAM & GENERATE REPORT ---
+        function submitExam() {
+            clearInterval(timerInterval);
+            examActive = false;
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(err => console.log(err));
+            }
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unattemptedCount = 0;
+
+            rawQuestions.forEach((q, idx) => {
+                const userAns = userResponses[idx];
+                if (userAns === null) {
+                    unattemptedCount++;
+                } else if (userAns === q.correct) {
+                    correctCount++;
+                } else {
+                    incorrectCount++;
+                }
+            });
+
+            const totalScore = (correctCount * 4) - (incorrectCount * 1);
+            const accuracy = (correctCount + incorrectCount) > 0 ? Math.round((correctCount / (correctCount + incorrectCount)) * 100) : 0;
+
+            document.getElementById('reportCandidateName').textContent = userName;
+            document.getElementById('reportTotalScore').textContent = `${totalScore} / 180`;
+            document.getElementById('reportCorrectCount').textContent = correctCount;
+            document.getElementById('reportIncorrectCount').textContent = incorrectCount;
+            document.getElementById('reportAccuracy').textContent = `${accuracy}%`;
+
+            renderPerformanceChart(correctCount, incorrectCount, unattemptedCount);
+            populateWeakAreas();
+            populateAnswerKeys();
+
+            examScreen.classList.add('hidden');
+            headerTimerSection.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderPerformanceChart(correct, incorrect, unattempted) {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct (+4)', 'Incorrect (-1)', 'Unattempted (0)'],
+                    datasets: [{
+                        data: [correct, incorrect, unattempted],
+                        backgroundColor: ['#22c55e', '#ef4444', '#cbd5e1'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        function populateWeakAreas() {
+            const weakAreasList = document.getElementById('weakAreasList');
+            weakAreasList.innerHTML = "";
+            
+            const weakTopics = [
+                "Adiabatic process calculations involving P-V-T relations and &gamma; exponents",
+                "Carnot engine efficiency and coefficient of performance (COP) relations with reservoir temperatures",
+                "First law of thermodynamics applied to cyclic processes and internal energy changes"
+            ];
+
+            weakTopics.forEach(topic => {
+                const li = document.createElement('li');
+                li.textContent = topic;
+                weakAreasList.appendChild(li);
+            });
+        }
+
+        function populateAnswerKeys() {
+            const container = document.getElementById('answerKeysContainer');
+            container.innerHTML = "";
+
+            rawQuestions.forEach((q, idx) => {
+                const userAns = userResponses[idx];
+                const isCorrect = userAns === q.correct;
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50/50 border-emerald-200' : 'bg-red-50/50 border-red-200'}`;
+                
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-md ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+                            Q${idx + 1}: ${q.type} (${q.topic})
+                        </span>
+                        <span class="text-xs font-semibold ${isCorrect ? 'text-emerald-600' : 'text-red-600'}">
+                            ${isCorrect ? 'Correct (+4)' : (userAns === null ? 'Unattempted (0)' : 'Incorrect (-1)')}
+                        </span>
+                    </div>
+                    <p class="text-sm font-medium text-slate-900 mb-2">${q.question}</p>
+                    <p class="text-xs text-slate-700 mb-1"><strong>Your Answer:</strong> ${userAns !== null ? String.fromCharCode(65 + userAns) + ". " + q.options[userAns] : 'Not Answered'}</p>
+                    <p class="text-xs text-emerald-700 mb-2"><strong>Correct Answer:</strong> ${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</p>
+                    <div class="bg-white/80 p-2.5 rounded-lg border border-slate-200 text-xs text-slate-600">
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        document.getElementById('downloadReportBtn').addEventListener('click', () => {
+            const element = document.getElementById('printableReport');
+            html2canvas(element, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${userName}_NEET_Physics_Thermodynamics_Report.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+
+        document.getElementById('sendWhatsAppBtn').addEventListener('click', () => {
+            const element = document.getElementById('printableReport');
+            html2canvas(element, { scale: 2 }).then(canvas => {
+                canvas.toBlob(blob => {
+                    const file = new File([blob], `${userName}_scorecard.png`, { type: "image/png" });
+                    
+                    const link = document.createElement('a');
+                    link.download = file.name;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+
+                    const totalScore = document.getElementById('reportTotalScore').textContent;
+                    const msg = encodeURIComponent(`Hello Soumendra Sir, I am ${userName}. I have completed NEET Physics Exam Series 8 Set A (Thermodynamics). My Total Score is ${totalScore}. Attached is my score report image.`);
+                    
+                    window.open(`https://wa.me/918910587106?text=${msg}`, '_blank');
+                    alert("Scorecard image downloaded successfully! Please share the downloaded image directly on WhatsApp to Soumendra Sir (8910587106).");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
